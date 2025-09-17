@@ -1,84 +1,146 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h2 id="roleTitle"></h2>
-  <div id="menu"></div>
-  <div id="content"></div>
-  <script src="script.js"></script>
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Health Dashboard</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background:#f5f5f5; margin:0; padding:0; }
+    header { background: #0c7c3e; color:white; padding:15px 20px; font-size:22px; font-weight:600; text-align:center; }
+    #roleTitle { margin-top:10px; margin-bottom:15px; text-align:center; color:#0a5c2c; font-size:24px; }
+    #menu { display:flex; flex-wrap:wrap; justify-content:center; margin-bottom:20px; }
+    button { padding:10px 20px; margin:5px; border:none; border-radius:5px; background:#0c7c3e; color:white; font-weight:600; cursor:pointer; transition:0.3s; }
+    button:hover { background:#0a5c2c; }
+    #content { max-width:1200px; margin:0 auto 20px auto; background:white; padding:20px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.1); min-height:400px; overflow-y:auto; }
+    .card { padding:15px; border-radius:8px; margin-bottom:15px; color:white; }
+    .safe { background:#4CAF50; }
+    .warning { background:#FF9800; }
+    .alert { background:#F44336; }
+    input { padding:10px; margin:5px 0; width:100%; border-radius:5px; border:1px solid #ccc; }
+    iframe { border-radius:8px; margin-top:10px; width:100%; max-width:560px; }
+    .tips { background:#e0f7fa; color:#006064; padding:10px; border-radius:5px; margin-top:10px; }
+    h3 { margin-bottom:10px; color:#0a5c2c; }
+    .stats { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:15px; }
+    .stats .card { flex:1; min-width:150px; text-align:center; font-weight:600; }
+    ul { padding-left:20px; }
+    @media(max-width:768px){ #menu{flex-direction:column; align-items:center;} }
+</style>
 </head>
 <body>
-  <nav>
-    <h2>Home</h2>
-  </nav>
 
-  <div id="dashboard-content">
-    <!-- Content will be injected here based on role -->
-  </div>
+<header>Smart Health Surveillance & Early Warning System</header>
+<h2 id="roleTitle"></h2>
+<div id="menu"></div>
+<div id="content"></div>
 
-  <script>
-    // Fetch role from localStorage (set after login)
-    const role = localStorage.getItem("role");
-    const contentDiv = document.getElementById("dashboard-content");
+<script>
+const role = localStorage.getItem("role") || "community"; // default for demo
+document.getElementById("roleTitle").innerText = "Welcome, " + role.toUpperCase();
 
-    if (role === "asha") {
-      contentDiv.innerHTML = `
-        <h3>ASHA Clinic Dashboard</h3>
+// Build menu
+let menuHTML = `<button onclick="showOutbreaks()">Dashboard</button>`;
+if(role === "asha") menuHTML += `<button onclick="waterInput()">Water Quality</button>`;
+else if(role === "official") menuHTML += `<button onclick="showAlerts()">Notifications</button>`;
+else if(role === "community") menuHTML += `<button onclick="checkHealth()">Health Check</button>`;
+menuHTML += `<button onclick="showAwareness()">Awareness</button>`;
+document.getElementById("menu").innerHTML = menuHTML;
+
+// Mock data
+const outbreaks = [
+    { area:"Village A", status:"Safe", date:"2025-09-17" },
+    { area:"Village B", status:"Warning", date:"2025-09-16" },
+    { area:"Village C", status:"Safe", date:"2025-09-15" },
+    { area:"Village D", status:"Warning", date:"2025-09-14" }
+];
+const alerts = [
+    { msg:"Water contamination reported in Village C", type:"alert" },
+    { msg:"Flu outbreak in Region 2", type:"warning" },
+    { msg:"Heavy rainfall warning, Village E", type:"warning" },
+    { msg:"Cholera alert in Village F", type:"alert" }
+];
+
+// Functions
+function showOutbreaks(){
+    let html = `<h3>Previous Outbreaks</h3>`;
+    html += `<div class="stats">
+                <div class="card safe">Safe Areas: ${outbreaks.filter(o=>o.status==='Safe').length}</div>
+                <div class="card warning">Warning Areas: ${outbreaks.filter(o=>o.status==='Warning').length}</div>
+                <div class="card alert">Total Outbreaks: ${outbreaks.length}</div>
+            </div>`;
+    outbreaks.forEach(o=>{
+        html += `<div class="card ${o.status.toLowerCase()}">${o.area} - ${o.status} (${o.date})</div>`;
+    });
+    html += `<div class="tips">Tip: Follow hygiene protocols and report unusual symptoms promptly.</div>`;
+    document.getElementById("content").innerHTML = html;
+}
+
+function waterInput(){
+    document.getElementById("content").innerHTML = `
+        <h3>Water Quality Checker</h3>
+        <p>Input the water parameters to check quality:</p>
+        <input id="ph" placeholder="pH">
+        <input id="hardness" placeholder="Hardness">
+        <input id="solids" placeholder="Solids">
+        <button onclick="predictWater()">Check</button>
+        <div id="result" style="margin-top:10px; font-weight:bold;"></div>
+        <div class="tips">Tip: Ideal pH is around 7, lower solids and hardness indicate better water quality.</div>`;
+}
+
+function predictWater(){
+    const ph=parseFloat(document.getElementById("ph").value)||7;
+    const hardness=parseFloat(document.getElementById("hardness").value)||0;
+    const solids=parseFloat(document.getElementById("solids").value)||0;
+    let quality = "Good Quality"; 
+    if((ph+hardness+solids)/3<7) quality="Poor Quality";
+    document.getElementById("result").innerText = "Prediction: "+quality;
+}
+
+function showAlerts(){
+    let html=`<h3>Notifications & Alerts</h3>`;
+    alerts.forEach(a=>{
+        html+=`<div class="card ${a.type}">${a.msg}</div>`;
+    });
+    html += `<div class="tips">Tip: Respond immediately to alerts. Stay informed with community updates.</div>`;
+    document.getElementById("content").innerHTML=html;
+}
+
+function checkHealth(){
+    document.getElementById("content").innerHTML = `
+        <h3>Health Self-Check</h3>
+        <p>Enter your symptoms separated by commas (e.g., fever, diarrhea, headache):</p>
+        <input id="symptoms" placeholder="Enter symptoms">
+        <button onclick="analyzeHealth()">Analyze</button>
+        <div id="healthResult" style="margin-top:10px; font-weight:bold;"></div>
+        <div class="tips">Tip: Regular health checkups help detect problems early.</div>`;
+}
+
+function analyzeHealth(){
+    const symptoms=document.getElementById("symptoms").value.toLowerCase();
+    let result="You seem healthy!";
+    if(symptoms.includes("fever")||symptoms.includes("diarrhea")) result="Possible infection, consult a doctor immediately!";
+    else if(symptoms.includes("headache")||symptoms.includes("cough")) result="Mild symptoms detected, monitor health closely.";
+    document.getElementById("healthResult").innerText=result;
+}
+
+function showAwareness(){
+    document.getElementById("content").innerHTML = `
+        <h3>Health Awareness & Tips</h3>
+        <p>Knowledge is key to prevent disease outbreaks. Follow these practices:</p>
         <ul>
-          <li><button onclick="openDashboard()">📊 Dashboard</button></li>
-          <li><button onclick="inputWater()">💧 Input Water Quality</button></li>
-          <li><button onclick="knowMore()">📖 Know More</button></li>
+            <li>Always drink boiled or filtered water.</li>
+            <li>Wash hands frequently with soap.</li>
+            <li>Maintain clean surroundings.</li>
+            <li>Report unusual symptoms in the community.</li>
+            <li>Follow nutrition and hygiene guidelines.</li>
         </ul>
-      `;
-    } else if (role === "govt") {
-      contentDiv.innerHTML = `
-        <h3>Govt Official Dashboard</h3>
-        <ul>
-          <li><button onclick="openDashboard()">📊 Dashboard</button></li>
-          <li><button onclick="showNotifications()">🔔 Notifications</button></li>
-          <li><button onclick="knowMore()">📖 Know More</button></li>
-        </ul>
-      `;
-    } else if (role === "user") {
-      contentDiv.innerHTML = `
-        <h3>User Dashboard</h3>
-        <ul>
-          <li><button onclick="openDashboard()">📊 Dashboard</button></li>
-          <li><button onclick="checkHealth()">🧑‍⚕️ Check Health</button></li>
-          <li><button onclick="knowMore()">📖 Know More</button></li>
-        </ul>
-      `;
-    } else {
-      contentDiv.innerHTML = "<p>❌ Role not recognized.</p>";
-    }
+        <h4>Instructional Video:</h4>
+        <iframe src="https://www.youtube.com/embed/pTBfPf0Z3FE?si=CI44DDuZPHQF9Mul" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <div class="tips">Tip: Share this awareness with family and neighbors to prevent outbreaks.</div>`;
+}
 
-    // 🔹 Placeholder functions (you will replace with real code)
-    function openDashboard() {
-      alert("📊 Dashboard: Insert your ML model code here to display outbreak history");
-    }
-    function inputWater() {
-      alert("💧 Input Water: Insert your water quality input + ML detection code here");
-    }
-    function showNotifications() {
-      alert("🔔 Notifications: Fetch recent contamination alerts here");
-    }
-    function checkHealth() {
-      alert("🧑‍⚕️ Check Health: Insert your symptom-checking ML model here");
-    }
-    function knowMore() {
-      alert("📖 Awareness: Show videos or awareness content here");
-    }
-  </script>
+// Default view
+showOutbreaks();
+</script>
+
 </body>
 </html>
