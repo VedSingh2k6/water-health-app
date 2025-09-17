@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
   <title>Login</title>
@@ -13,5 +13,360 @@
     <p id="error"></p>
   </div>
   <script src="script.js"></script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Health Surveillance & Early Warning System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c7c3e 0%, #0a5c2c 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .left-panel {
+            flex: 1;
+            background: linear-gradient(to bottom right, #0c7c3e, #0a5c2c);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .right-panel {
+            flex: 1;
+            padding: 40px;
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0c7c3e 0%, #0a5c2c 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-inner {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: 800;
+            color: #0c7c3e;
+            position: relative;
+        }
+        
+        .logo-inner::before {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border: 3px solid #0c7c3e;
+            border-radius: 50%;
+            clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+        }
+        
+        .logo-inner::after {
+            content: "＋";
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 20px;
+            color: #0c7c3e;
+            font-weight: 300;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        .logo-subtext {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        
+        h1 {
+            color: #0a5c2c;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #0c7c3e;
+            margin-bottom: 30px;
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
+            transition: all 0.3s;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #0c7c3e;
+            box-shadow: 0 0 0 3px rgba(12, 124, 62, 0.2);
+        }
+        
+        .login-btn {
+            background: linear-gradient(to right, #0c7c3e, #0a5c2c);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(12, 124, 62, 0.4);
+        }
+        
+        .system-info {
+            margin-top: 40px;
+        }
+        
+        .system-info h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .system-info p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .features {
+            list-style-type: none;
+            margin-top: 20px;
+        }
+        
+        .features li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .features i {
+            margin-right: 10px;
+            color: #6bc4ff;
+            font-size: 18px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            
+            .left-panel {
+                padding: 30px;
+            }
+            
+            .right-panel {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .left-panel, .right-panel {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            select, input {
+                padding: 12px;
+            }
+            
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .logo-inner {
+                width: 80px;
+                height: 80px;
+                font-size: 36px;
+            }
+            
+            .logo-text {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-inner">F2F</div>
+                </div>
+                <div class="logo-text">Farm2Future</div>
+                <div class="logo-subtext">Healthcare Solutions</div>
+            </div>
+            
+            <div class="system-info">
+                <h3>Smart Health Surveillance & Early Warning System</h3>
+                <p>Bridging agriculture and healthcare for sustainable community wellness.</p>
+                
+                <ul class="features">
+                    <li><i class="fas fa-check-circle"></i> Integrated farm-to-health monitoring</li>
+                    <li><i class="fas fa-check-circle"></i> Nutritional health tracking</li>
+                    <li><i class="fas fa-check-circle"></i> Multi-role access system</li>
+                    <li><i class="fas fa-check-circle"></i> Community health analytics</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <h1>Welcome to Farm2Future</h1>
+            <h2>Login to Your Account</h2>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="role">Select Role:</label>
+                    <select id="role" required>
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="asha">ASHA Worker</option>
+                        <option value="official">Govt. Official</option>
+                        <option value="community">Community User</option>
+                        <!-- Agriculture Officer option has been removed -->
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email / ID:</label>
+                    <input type="text" id="email" placeholder="Enter your ID" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const role = document.getElementById('role').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!role) {
+                alert('Please select your role');
+                return;
+            }
+            
+            if (!email) {
+                alert('Please enter your ID/email');
+                return;
+            }
+            
+            if (!password) {
+                alert('Please enter your password');
+                return;
+            }
+            
+            // Simple role-based redirect (for demonstration)
+            const roleNames = {
+                'asha': 'ASHA Worker',
+                'official': 'Government Official',
+                'community': 'Community User'
+                // Removed 'agriculture' entry
+            };
+            
+            alert(`Login successful!\nWelcome, ${roleNames[role]}`);
+            
+            // In a real application, you would redirect to the appropriate dashboard
+            // window.location.href = `${role}-dashboard.html`;
+        });
+    </script>
 </body>
 </html>
