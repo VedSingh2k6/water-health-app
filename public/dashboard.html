@@ -1,0 +1,84 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2 id="roleTitle"></h2>
+  <div id="menu"></div>
+  <div id="content"></div>
+  <script src="script.js"></script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <h2>Home</h2>
+  </nav>
+
+  <div id="dashboard-content">
+    <!-- Content will be injected here based on role -->
+  </div>
+
+  <script>
+    // Fetch role from localStorage (set after login)
+    const role = localStorage.getItem("role");
+    const contentDiv = document.getElementById("dashboard-content");
+
+    if (role === "asha") {
+      contentDiv.innerHTML = `
+        <h3>ASHA Clinic Dashboard</h3>
+        <ul>
+          <li><button onclick="openDashboard()">📊 Dashboard</button></li>
+          <li><button onclick="inputWater()">💧 Input Water Quality</button></li>
+          <li><button onclick="knowMore()">📖 Know More</button></li>
+        </ul>
+      `;
+    } else if (role === "govt") {
+      contentDiv.innerHTML = `
+        <h3>Govt Official Dashboard</h3>
+        <ul>
+          <li><button onclick="openDashboard()">📊 Dashboard</button></li>
+          <li><button onclick="showNotifications()">🔔 Notifications</button></li>
+          <li><button onclick="knowMore()">📖 Know More</button></li>
+        </ul>
+      `;
+    } else if (role === "user") {
+      contentDiv.innerHTML = `
+        <h3>User Dashboard</h3>
+        <ul>
+          <li><button onclick="openDashboard()">📊 Dashboard</button></li>
+          <li><button onclick="checkHealth()">🧑‍⚕️ Check Health</button></li>
+          <li><button onclick="knowMore()">📖 Know More</button></li>
+        </ul>
+      `;
+    } else {
+      contentDiv.innerHTML = "<p>❌ Role not recognized.</p>";
+    }
+
+    // 🔹 Placeholder functions (you will replace with real code)
+    function openDashboard() {
+      alert("📊 Dashboard: Insert your ML model code here to display outbreak history");
+    }
+    function inputWater() {
+      alert("💧 Input Water: Insert your water quality input + ML detection code here");
+    }
+    function showNotifications() {
+      alert("🔔 Notifications: Fetch recent contamination alerts here");
+    }
+    function checkHealth() {
+      alert("🧑‍⚕️ Check Health: Insert your symptom-checking ML model here");
+    }
+    function knowMore() {
+      alert("📖 Awareness: Show videos or awareness content here");
+    }
+  </script>
+</body>
+</html>

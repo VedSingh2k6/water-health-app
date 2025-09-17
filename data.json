@@ -1,0 +1,8 @@
+{
+  "outbreaks": [
+    { "id": 1, "area": "Delhi", "date": "2025-09-16", "status": "contaminated" }
+  ],
+  "alerts": [
+    { "id": 1, "msg": "High contamination detected in Delhi Sector 5" }
+  ]
+}
